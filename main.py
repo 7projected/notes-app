@@ -64,14 +64,20 @@ while True:
         print("")
 
         name = input("Note name to delete: ")
+
+        if name == "" or name.startswith(" "):
+            print("Invalid note name.")
+            input("Press ENTER to continue.")
+            continue
+
         yn = input("Are you sure you want to delete this note? (y/n): ")
 
-        if (yn == "y"):
+        if yn == "y":
             if manager.deleteNote(name):
                 print("Note deleted.")
             else:
                 print("Note not found.")
-        elif (yn == "n"):
+        elif yn == "n":
             print("OK. Cancelled.")
 
         input("Press ENTER to continue.")
