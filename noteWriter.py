@@ -128,6 +128,8 @@ class NoteWriter:
 
                 elif userInput.startswith("!next"):
                     self.currentLine += 1
+                    if  self.currentLine > len(self.lines):
+                        self.lines.append("")
 
                 elif userInput.startswith("!clear"):
                     self.clearAll()

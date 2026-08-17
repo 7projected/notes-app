@@ -30,7 +30,7 @@ while True:
             input("Press ENTER to continue.")
             continue
 
-        note = manager.createNote()
+        note = manager.createNote(name)
         manager.addNote(name, note)
 
     elif userInput == "!edit":

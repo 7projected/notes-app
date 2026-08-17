@@ -1,1 +1,33 @@
-{}
+{
+    "Biology Notes": {
+        "tags": [
+            "biology",
+            "bio",
+            "zoology",
+            "zoo",
+            "chemistry",
+            "chem",
+            "school",
+            "college"
+        ],
+        "lines": [
+            "This is editted over",
+            "so is htis one",
+            "i cant type",
+            "",
+            "the femur is the strongest bone in the human body",
+            "it is also the most painful bone in the human body",
+            "this",
+            "sidfjklsdfjflksdf",
+            "is the newest line",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "ERROR: !next after newest line doesnt add another one",
+            "ERROR: file name not showing in notewriter"
+        ]
+    }
+}

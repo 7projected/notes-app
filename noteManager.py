@@ -50,12 +50,12 @@ class NoteManager:
 
         return tags
 
-    def createNote(self):
+    def createNote(self, name):
         clearConsole()
 
         tags = self.getFileTags()
 
-        writer = NoteWriter("", tags)
+        writer = NoteWriter(name, tags)
         lines = writer.getDetailedInput()
 
         return {
