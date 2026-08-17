@@ -1,12 +1,11 @@
-import tkinter
-import os
+from noteWriter import *
 
 def getFileTags():
     retValue = []
     lastValue = ""
     
     while lastValue != "!!":
-        os.system('cls' if os.name == 'nt' else 'clear') # clear console
+        clearConsole()
         outputString = "Current Tags: "
         for i in range(len(retValue)):
             outputString += f'{retValue[i]}, '
@@ -25,11 +24,6 @@ def getFileTags():
                     retValue.pop()
     
     return retValue
-    
-
-def getDetailedInput(fileName):
-    return ""
-
 
 def getFileCreationInput():
     retValue = {
@@ -37,9 +31,13 @@ def getFileCreationInput():
         "text":"",
         "tags":[]
     }
-    
+
+    clearConsole()
     retValue["name"] = input("File Name: ")
-    retValue["text"] = getDetailedInput(retValue["name"])
     retValue["tags"] = getFileTags()
+
+    nw = NoteWriter(retValue["name"], retValue["tags"]) # <=== Right here is where you wwould input a saved files lines
+
+    retValue["text"] = nw.getDetailedInput()
     
     return retValue
