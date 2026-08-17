@@ -36,7 +36,7 @@ class ConsoleCommand(Enum):
 class NoteWriter:
     def __init__(self, name, tags, lines=None):
         self.lines = lines if lines is not None else []
-        self.currentLine = 0
+        self.currentLine = len(self.lines)
         self.name = name
         self.tags = tags
         self.command = ConsoleCommand.TYPE
