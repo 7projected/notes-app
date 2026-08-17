@@ -13,6 +13,8 @@ while True:
     print("!new          Create a new note.")
     print("!edit         Edit a note.")
     print("!del          Delete a note.")
+    print("!tag          Search notes by tag.")
+    print("!edittags     Edit a note's tags.")
     print("!quit         Exit the program.")
     print("")
 
@@ -62,16 +64,41 @@ while True:
         print("")
 
         name = input("Note name to delete: ")
-        yn = input("Are you sure? (y/n): ")
+        yn = input("Are you sure you want to delete this note? (y/n): ")
+
         if (yn == "y"):
             if manager.deleteNote(name):
                 print("Note deleted.")
             else:
                 print("Note not found.")
         elif (yn == "n"):
-            print("Cancelled.")
+            print("OK. Cancelled.")
 
         input("Press ENTER to continue.")
+
+    elif userInput == "!tag":
+        clearConsole()
+
+        tag = input("Search tag: ")
+
+        print("")
+        manager.displayNotesByTag(tag)
+
+        input("Press ENTER to continue.")
+
+    elif userInput == "!edittags":
+        clearConsole()
+
+        manager.displayNoteNames()
+        print("")
+
+        name = input("Note name to edit tags: ")
+
+        if manager.editTags(name):
+            print("Tags updated.")
+        else:
+            print("Note not found.")
+            input("Press ENTER to continue.")
 
     elif userInput == "!quit":
         break

@@ -2,8 +2,6 @@ import json
 from noteWriter import NoteWriter, clearConsole
 
 
-
-
 class NoteManager:
     def __init__(self, fileName="notes.json"):
         self.fileName = fileName
@@ -24,8 +22,8 @@ class NoteManager:
         with open(self.fileName, "w") as file:
             json.dump(self.notes, file, indent=4)
 
-    def getFileTags(self):
-        tags = []
+    def getFileTags(self, currentTags=None):
+        tags = currentTags.copy() if currentTags is not None else []
         lastValue = ""
 
         while lastValue != "!!":
@@ -43,7 +41,8 @@ class NoteManager:
 
             if lastValue != "" and lastValue != " ":
                 if lastValue != "!!" and lastValue != "<<":
-                    tags.append(lastValue)
+                    if lastValue not in tags:
+                        tags.append(lastValue)
 
                 elif lastValue == "<<":
                     if len(tags) > 0:
@@ -64,23 +63,23 @@ class NoteManager:
             "lines": lines
         }
 
-    def addNote(self, key, note):
-        self.notes[key] = note
+    def addNote(self, name, note):
+        self.notes[name] = note
         self.saveNotes()
 
-    def loadNote(self, key):
-        if key in self.notes:
-            return self.notes[key]
+    def loadNote(self, name):
+        if name in self.notes:
+            return self.notes[name]
 
         return None
 
-    def saveNote(self, key, note):
-        self.notes[key] = note
+    def saveNote(self, name, note):
+        self.notes[name] = note
         self.saveNotes()
 
-    def deleteNote(self, key):
-        if key in self.notes:
-            del self.notes[key]
+    def deleteNote(self, name):
+        if name in self.notes:
+            del self.notes[name]
             self.saveNotes()
             return True
 
@@ -98,3 +97,38 @@ class NoteManager:
             print(name)
 
         print("-" * 60)
+
+    def searchByTag(self, tag):
+        results = []
+
+        for name, note in self.notes.items():
+            if tag in note["tags"]:
+                results.append(name)
+
+        return results
+
+    def displayNotesByTag(self, tag):
+        results = self.searchByTag(tag)
+
+        if len(results) == 0:
+            print(f'No notes found with tag "{tag}".')
+            return
+
+        print(f'Notes with tag "{tag}":')
+        print("-" * 60)
+
+        for name in results:
+            print(name)
+
+        print("-" * 60)
+
+    def editTags(self, name):
+        note = self.loadNote(name)
+
+        if note is None:
+            return False
+
+        note["tags"] = self.getFileTags(note["tags"])
+        self.saveNote(name, note)
+
+        return True
