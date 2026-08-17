@@ -41,9 +41,12 @@ class NoteWriter:
         self.tags = tags
         self.command = ConsoleCommand.TYPE
 
+        self.preUIline = "Type !help to see commands."
+
     def drawBasicUI(self):
         clearConsole()
 
+        print(self.preUIline)
         print(f"File: {self.name}")
         print(f"Tags: {self.tags}")
         print("-" * 60)
@@ -52,7 +55,6 @@ class NoteWriter:
             print(f"{index + 1:>3} | {line}")
 
         print("-" * 60)
-        print("Type !help to see commands.")
 
     def removeLine(self):
         self.drawBasicUI()
@@ -66,32 +68,28 @@ class NoteWriter:
                 self.command = ConsoleCommand.TYPE
                 self.currentLine = max(0, self.currentLine - 1)
             else:
-                print("Invalid line number.")
+                self.preUIline = "Invalid line number."
 
         except ValueError:
-            print("Please enter a valid number.")
+            self.preUIline = "Please enter a valid number."
 
     def editLine(self, lineNumber):
         self.drawBasicUI()
 
-        try:
-            if 0 <= lineNumber < len(self.lines):
-                self.command = ConsoleCommand.TYPE
-                self.currentLine = lineNumber
-            else:
-                print("Invalid line number.")
-
-        except ValueError:
-            print("Please enter a valid number.")
+        if 0 <= lineNumber < len(self.lines):
+            self.command = ConsoleCommand.TYPE
+            self.currentLine = lineNumber
+        else:
+            self.preUIline = "Invalid line number."
 
     def clearAll(self):
         clearConsole()
 
         f = input("If you REALLY want to delete this whole note document type PLEASEDEL: ")
         
-
-        if f.startswith("PLEASEDEL"):
+        if f == "PLEASEDEL":
             self.lines = []
+            self.currentLine = 0
 
     def getDetailedInput(self):
         clearConsole()
@@ -115,7 +113,7 @@ class NoteWriter:
                         lineNumber = int(input("Edit line number: ")) - 1
                         self.editLine(lineNumber)
                     except ValueError:
-                        print("Please enter a valid number.")
+                        self.preUIline = "Please enter a valid number."
 
                 elif userInput.startswith("!!"):
                     self.command = ConsoleCommand.EXIT
