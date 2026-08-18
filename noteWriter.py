@@ -56,11 +56,11 @@ class NoteWriter:
 
         print("-" * 60)
 
+
     def removeLine(self):
         self.drawBasicUI()
 
         try:
-            # Convert user's 1-based number to Python's 0-based index
             lineNumber = int(input("Remove line number: ")) - 1
 
             if 0 <= lineNumber < len(self.lines):
@@ -91,6 +91,7 @@ class NoteWriter:
             self.lines = []
             self.currentLine = 0
 
+
     def getDetailedInput(self):
         clearConsole()
 
@@ -101,46 +102,52 @@ class NoteWriter:
             userInput = input(f"{self.currentLine + 1:>3} | ")
 
             if userInput.startswith("!"):
-                if userInput.startswith("!help"):
-                    showHelp()
+                self.handleCommand(userInput)
+                continue
 
-                elif userInput.startswith("!rm"):
-                    self.removeLine()
-
-                elif userInput.startswith("!edit"):
-                    try:
-                        # Convert user's 1-based number to 0-based index
-                        lineNumber = int(input("Edit line number: ")) - 1
-                        self.editLine(lineNumber)
-                    except ValueError:
-                        self.preUIline = "Please enter a valid number."
-
-                elif userInput.startswith("!!"):
-                    self.command = ConsoleCommand.EXIT
-                    continue
-
-                elif userInput.startswith("!new"):
-                    self.currentLine = len(self.lines)
-
-                elif userInput.startswith("!prev"):
-                    if self.currentLine > 0:
-                        self.currentLine -= 1
-
-                elif userInput.startswith("!next"):
-                    self.currentLine += 1
-                    if  self.currentLine > len(self.lines):
-                        self.lines.append("")
-
-                elif userInput.startswith("!clear"):
-                    self.clearAll()
-
-            else:
-                if self.currentLine >= len(self.lines):
-                    self.lines.append(userInput)
-                else:
-                    self.lines[self.currentLine] = userInput
-
-                if self.command == ConsoleCommand.TYPE:
-                    self.currentLine += 1
+            self.handleTextInput(userInput)
 
         return self.lines
+
+    def handleCommand(self, userInput):
+        if userInput.startswith("!help"):
+            showHelp()
+
+        elif userInput.startswith("!rm"):
+            self.removeLine()
+
+        elif userInput.startswith("!edit"):
+            try:
+                # Convert user's 1-based number to 0-based index
+                lineNumber = int(input("Edit line number: ")) - 1
+                self.editLine(lineNumber)
+            except ValueError:
+                self.preUIline = "Please enter a valid number."
+
+        elif userInput.startswith("!!"):
+            self.command = ConsoleCommand.EXIT
+
+        elif userInput.startswith("!new"):
+            self.currentLine = len(self.lines)
+
+        elif userInput.startswith("!prev"):
+            if self.currentLine > 0:
+                self.currentLine -= 1
+
+        elif userInput.startswith("!next"):
+            self.currentLine += 1
+
+            if self.currentLine > len(self.lines):
+                self.lines.append("")
+
+        elif userInput.startswith("!clear"):
+            self.clearAll()
+
+    def handleTextInput(self, userInput):
+        if self.currentLine >= len(self.lines):
+            self.lines.append(userInput)
+        else:
+            self.lines[self.currentLine] = userInput
+
+        if self.command == ConsoleCommand.TYPE:
+            self.currentLine += 1

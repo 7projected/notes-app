@@ -5,9 +5,9 @@ from noteWriter import NoteWriter, clearConsole
 class NoteManager:
     def __init__(self, fileName="notes.json"):
         self.fileName = fileName
-        self.notes = self.loadNotes()
+        self.notes = self.loadAllNotes()
 
-    def loadNotes(self):
+    def loadAllNotes(self):
         try:
             with open(self.fileName, "r") as file:
                 return json.load(file)
@@ -18,11 +18,12 @@ class NoteManager:
         except json.JSONDecodeError:
             return {}
 
-    def saveNotes(self):
+    def saveAllNotes(self):
         with open(self.fileName, "w") as file:
             json.dump(self.notes, file, indent=4)
 
-    def getFileTags(self, currentTags=None):
+
+    def getUserInputtedTags(self, currentTags=None):
         tags = currentTags.copy() if currentTags is not None else []
         lastValue = ""
 
@@ -50,10 +51,22 @@ class NoteManager:
 
         return tags
 
+    def editFileTags(self, fileName):
+            note = self.loadNote(fileName)
+    
+            if note is None:
+                return False
+    
+            note["tags"] = self.getUserInputtedTags(note["tags"])
+            self.saveNote(fileName, note)
+    
+            return True
+
+
     def createNote(self, name):
         clearConsole()
 
-        tags = self.getFileTags()
+        tags = self.getUserInputtedTags()
 
         writer = NoteWriter(name, tags)
         lines = writer.getDetailedInput()
@@ -65,8 +78,8 @@ class NoteManager:
 
     def addNote(self, name, note):
         self.notes[name] = note
-        self.saveNotes()
-
+        self.saveAllNotes()
+    
     def loadNote(self, name):
         if name in self.notes:
             return self.notes[name]
@@ -75,15 +88,16 @@ class NoteManager:
 
     def saveNote(self, name, note):
         self.notes[name] = note
-        self.saveNotes()
+        self.saveAllNotes()
 
     def deleteNote(self, name):
         if name in self.notes:
             del self.notes[name]
-            self.saveNotes()
+            self.saveAllNotes()
             return True
 
         return False
+
 
     def displayNoteNames(self):
         if len(self.notes) == 0:
@@ -98,6 +112,21 @@ class NoteManager:
 
         print("-" * 60)
 
+    def displayNotesByTag(self, tag):
+            results = self.searchByTag(tag)
+    
+            if len(results) == 0:
+                print(f'No notes found with tag "{tag}".')
+                return
+    
+            print(f'Notes with tag "{tag}":')
+            print("-" * 60)
+    
+            for name in results:
+                print(name)
+    
+            print("-" * 60)
+    
     def searchByTag(self, tag):
         results = []
 
@@ -107,28 +136,4 @@ class NoteManager:
 
         return results
 
-    def displayNotesByTag(self, tag):
-        results = self.searchByTag(tag)
-
-        if len(results) == 0:
-            print(f'No notes found with tag "{tag}".')
-            return
-
-        print(f'Notes with tag "{tag}":')
-        print("-" * 60)
-
-        for name in results:
-            print(name)
-
-        print("-" * 60)
-
-    def editTags(self, name):
-        note = self.loadNote(name)
-
-        if note is None:
-            return False
-
-        note["tags"] = self.getFileTags(note["tags"])
-        self.saveNote(name, note)
-
-        return True
+    

@@ -1,7 +1,7 @@
 from noteManager import *
 from noteWriter import *
 
-class Scrib:
+class NotesCLI:
     def __init__(self):
         self.manager = NoteManager()
 
@@ -96,7 +96,7 @@ class Scrib:
     def drawMainMenu(self):
         clearConsole()
         
-        print("Scrib                                      - by 7projected")
+        print("NotesCLI                                      - by 7projected")
         print("A keyboard-first note management software.")
         print("")
         print("!new                      Create a new note.")

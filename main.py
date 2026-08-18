@@ -1,4 +1,4 @@
-from scrib import *
+from notecli import NotesCLI
 
-scrib = Scrib()
-scrib.mainLoop()
+ncli = NotesCLI()
+ncli.mainLoop()
