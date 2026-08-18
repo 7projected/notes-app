@@ -1,5 +1,6 @@
 from noteManager import *
 from noteWriter import *
+from txtParser import *
 
 class NotesCLI:
     def __init__(self):
@@ -92,6 +93,24 @@ class NotesCLI:
 
         input("Press ENTER to continue.")
 
+    def convertNoteToTxt(self):
+        clearConsole()
+        self.manager.displayNoteNames()
+
+        name = input("File to convert to .txt: ")
+        note = self.manager.loadNote(name)
+        if (note == None):
+            print("No note found.")
+            return 
+
+        fileName = input("File found. Enter the name to save it as: ")
+
+        txt = TxtFileParser.generateTextFile(name, note["tags"], note["lines"])
+        TxtFileParser.saveToFile(fileName,  txt)
+
+        print(f'Succesfully saved {name} as ./txtOutput/{fileName}.txt.')
+        input("Press ENTER to continue.")
+
 
     def drawMainMenu(self):
         clearConsole()
@@ -104,7 +123,7 @@ class NotesCLI:
         print("!del                      Delete a note.")
         print("!tag                      Search notes by tag.")
         print("!edittags                 Edit a note's tags.")
-        print("!todocx                   Saves a note to a .docx file")
+        print("!totxt                    Saves a note to a .txt file")
         print("!quit                     Exit the program.")
         print("")
 
@@ -124,6 +143,8 @@ class NotesCLI:
                     self.searchByTag()
                 case "!edittags":
                     self.editTags()
+                case "!totxt":
+                    self.convertNoteToTxt()
                 case "!quit":
                     break
                 case _:
