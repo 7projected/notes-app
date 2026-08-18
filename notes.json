@@ -5,16 +5,6 @@
             "notes",
             "balls"
         ],
-        "lines": [
-            "This should be line one,",
-            "This should be directly below line one.",
-            "",
-            "This should be a line below line 2.",
-            "",
-            "",
-            "",
-            "",
-            "This should be wayy to far for you to count"
-        ]
+        "lines": []
     }
 }

@@ -6,7 +6,6 @@ class NotesCLI:
     def __init__(self):
         self.manager = NoteManager()
 
-
     def newFile(self):
         clearConsole()
         name = input("Note name: ")
@@ -77,7 +76,7 @@ class NotesCLI:
 
         name = input("Note name to edit tags: ")
 
-        if self.manager.editTags(name):
+        if self.manager.editFileTags(name):
             print("Tags updated.")
         else:
             print("Note not found.")
